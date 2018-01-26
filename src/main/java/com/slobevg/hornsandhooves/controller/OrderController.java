@@ -1,12 +1,10 @@
 package com.slobevg.hornsandhooves.controller;
 
 import com.slobevg.hornsandhooves.model.Order;
+import com.slobevg.hornsandhooves.model.Worker;
 import com.slobevg.hornsandhooves.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,18 +19,28 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    @PostMapping
     public void create(@RequestBody Order order) {
+        orderService.save(order);
     }
 
+    @GetMapping
     public List<Order> list() {
-        return null;
+        return orderService.list();
     }
 
-    public void update(@RequestBody Order order) {
-
+    @GetMapping(path = "/{id}")
+    public Order get(@PathVariable("id") Order order) {
+        return order;
     }
 
-    public void delete(@RequestParam Long id) {
+    @PatchMapping(value = "/{id}")
+    public void update(@ModelAttribute("id") Order order) {
+        orderService.save(order);
+    }
 
+    @DeleteMapping(value = "/{id}")
+    public void delete(@PathVariable("id") Order order) {
+        orderService.delete(order);
     }
 }

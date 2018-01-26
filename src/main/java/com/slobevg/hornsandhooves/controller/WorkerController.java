@@ -3,10 +3,7 @@ package com.slobevg.hornsandhooves.controller;
 import com.slobevg.hornsandhooves.model.Worker;
 import com.slobevg.hornsandhooves.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,18 +18,28 @@ public class WorkerController {
         this.workerService = workerService;
     }
 
+    @PostMapping
     public void create(@RequestBody Worker worker) {
+        workerService.save(worker);
     }
 
+    @GetMapping
     public List<Worker> list() {
-        return null;
+        return workerService.list();
     }
 
-    public void update(@RequestBody Worker worker) {
-
+    @GetMapping(path = "/{id}")
+    public Worker get(@PathVariable("id") Worker worker) {
+        return worker;
     }
 
-    public void delete(@RequestParam Long id) {
+    @PatchMapping(value = "/{id}")
+    public void update(@ModelAttribute("id") Worker worker) {
+        workerService.save(worker);
+    }
 
+    @DeleteMapping(value = "/{id}")
+    public void delete(@PathVariable("id") Worker worker) {
+        workerService.delete(worker);
     }
 }
