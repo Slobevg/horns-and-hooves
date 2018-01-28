@@ -1,5 +1,6 @@
 package com.slobevg.hornsandhooves.service;
 
+import com.slobevg.hornsandhooves.model.Order;
 import com.slobevg.hornsandhooves.model.Worker;
 import com.slobevg.hornsandhooves.repository.WorkerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,12 @@ import java.util.List;
 public class WorkerService {
 
     private final WorkerRepository workerRepository;
+    private final OrderService orderService;
 
     @Autowired
-    public WorkerService(WorkerRepository workerRepository) {
+    public WorkerService(WorkerRepository workerRepository, OrderService orderService) {
         this.workerRepository = workerRepository;
+        this.orderService = orderService;
     }
 
     @Transactional
@@ -30,6 +33,8 @@ public class WorkerService {
 
     @Transactional
     public void delete(Worker worker) {
+        orderService.list(OrderFilter.byWorker(worker))
+                .forEach(order -> order.setWorker(null));
         workerRepository.delete(worker);
     }
 }

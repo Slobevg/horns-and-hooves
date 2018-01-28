@@ -2,6 +2,7 @@ package com.slobevg.hornsandhooves.controller;
 
 import com.slobevg.hornsandhooves.model.Order;
 import com.slobevg.hornsandhooves.model.Worker;
+import com.slobevg.hornsandhooves.service.OrderFilter;
 import com.slobevg.hornsandhooves.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,8 @@ public class OrderController {
     }
 
     @GetMapping
-    public List<Order> list() {
-        return orderService.list();
+    public List<Order> list(@RequestBody OrderFilter orderFilter) {
+         return orderService.list(orderFilter);
     }
 
     @GetMapping(path = "/{id}")
